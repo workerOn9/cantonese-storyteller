@@ -1,0 +1,64 @@
+# 粤语评书 - Rust后端Cargo配置
+# 项目信息：
+# - 名称：cantonese-storyteller（粤语评书）
+# - 版本：0.1.0（MVP版本）
+# - 描述：基于Tauri的粤语评书应用，支持语音合成
+# - 版本：2021版Rust
+
+[package]
+name = "cantonese-storyteller"           # 项目名称：粤语评书
+version = "0.1.0"                        # 版本号：MVP版本
+description = "A Tauri App for Cantonese storytelling with voice synthesis"  # 项目描述
+authors = ["you"]                        # 作者信息
+license = ""                             # 许可证（待填写）
+repository = ""                          # 代码仓库（待填写）
+edition = "2021"                         # Rust版本：2021版
+
+# 构建依赖
+[build-dependencies]
+tauri-build = { version = "2", features = [] }  # Tauri构建工具
+
+# 运行时依赖
+[dependencies]
+# Tauri核心库（跨平台桌面应用框架）
+tauri = { version = "2", features = [] }
+
+# Tauri插件
+# 文件系统插件：用于本地文件操作
+tauri-plugin-fs = "2"
+# 数据存储插件：用于本地数据持久化
+tauri-plugin-store = "2"
+# 系统通知插件：用于发送桌面通知
+tauri-plugin-notification = "2"
+
+# 序列化库
+serde = { version = "1", features = ["derive"] }  # 序列化/反序列化框架
+serde_json = "1"                                   # JSON处理库
+
+# 异步运行时
+tokio = { version = "1", features = ["full"] }     # 异步运行时（全功能）
+
+# HTTP客户端
+reqwest = { version = "0.11", features = ["json", "multipart"] }  # HTTP客户端（支持JSON和多部分表单）
+
+# 数据库
+sqlx = { version = "0.7", features = ["runtime-tokio-rustls", "sqlite"] }  # SQL工具包（SQLite支持）
+
+# 时间处理
+chrono = { version = "0.4", features = ["serde"] }  # 日期时间处理库
+
+# 日志系统
+log = "0.4"           # 日志框架
+env_logger = "0.10"   # 环境日志记录器
+
+# 音频处理
+rodio = "0.17"  # 音频播放库
+hound = "3.5"   # WAV文件处理库
+
+# 路径操作
+dirs = "5.0"    # 系统路径操作
+
+# 功能特性
+[features]
+default = ["custom-protocol"]                    # 默认特性：自定义协议
+custom-protocol = ["tauri/custom-protocol"]      # 自定义协议支持（用于生产环境）
