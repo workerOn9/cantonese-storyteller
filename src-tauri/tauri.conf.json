@@ -4,7 +4,8 @@
   "identifier": "com.cantonese-storyteller.app",
   "build": {
     "frontendDist": "../dist",
-    "devUrl": "http://localhost:1420"
+    "devUrl": "http://localhost:1420",
+    "beforeDevCommand": "bun run dev"
   },
   "app": {
     "withGlobalTauri": false,
