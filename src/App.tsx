@@ -12,6 +12,7 @@ interface RecordingStatus {
   audioPath?: string        // 音频文件路径
   error?: string            // 错误信息
   duration: number          // 录制时长
+  modelId?: string          // 训练成功的模型ID
 }
 
 /**
@@ -124,22 +125,22 @@ function App() {
    */
   const trainVoiceModel = async () => {
     if (!status.audioPath) return
-    
+
     try {
-      setStatus(prev => ({ ...prev, isProcessing: true, error: undefined }))
-      
-      // 调用Java后端训练声音模型
+      setStatus(prev => ({ ...prev, isProcessing: true, error: undefined, modelId: undefined }))
+
+      // 调用Rust后端训练声音模型
       const modelId = await invoke<string>('train_voice_model', {
         audioPath: status.audioPath,
         userId: 1, // MVP版本使用临时用户ID
         dialect: 'cantonese'  // 粤语
       })
-      
+
       console.log('声音模型训练完成:', modelId)
-      setStatus(prev => ({ ...prev, isProcessing: false }))
+      setStatus(prev => ({ ...prev, isProcessing: false, modelId }))
     } catch (error) {
-      setStatus(prev => ({ 
-        ...prev, 
+      setStatus(prev => ({
+        ...prev,
         isProcessing: false,
         error: error instanceof Error ? error.message : '声音训练失败'
       }))
@@ -189,13 +190,20 @@ function App() {
         {status.audioPath && (
           <div className="status">
             <p>✅ 录制完成！音频文件已保存</p>
-            <button 
+            <button
               onClick={trainVoiceModel}
               disabled={status.isProcessing}
               style={{ marginTop: '1rem' }}
             >
               {status.isProcessing ? '训练中...' : '训练声音模型'}
             </button>
+          </div>
+        )}
+
+        {status.modelId && (
+          <div className="status" style={{ background: '#e8f5e9', border: '1px solid #4caf50', borderRadius: '4px', padding: '1rem', marginTop: '1rem' }}>
+            <p style={{ margin: 0, color: '#2e7d32', fontWeight: 'bold' }}>🎉 声音模型训练成功！</p>
+            <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontFamily: 'monospace' }}>模型ID: {status.modelId}</p>
           </div>
         )}
 
