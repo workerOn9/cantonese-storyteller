@@ -14,8 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
-import org.springframework.web.socket.config.annotation.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.SockJsServiceRegistration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 
 @Configuration
 @EnableWebSocketMessageBroker

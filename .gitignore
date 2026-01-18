@@ -75,6 +75,7 @@ jest/cache/
 /target/
 # Gradle
 /build/
+/backend-java/build/
 .gradle/
 # common Java artifacts
 *.class
