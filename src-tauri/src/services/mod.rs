@@ -8,5 +8,6 @@
  * - cache_service: 本地缓存服务（SQLite数据库操作）
  */
 
-pub mod audio_service;  // 音频处理和管理服务
-pub mod cache_service;  // 本地数据缓存服务
+pub mod audio_service;      // 音频处理和管理服务
+pub mod cache_service;      // 本地数据缓存服务
+pub mod recording_service;  // 音频录制服务

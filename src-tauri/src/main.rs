@@ -8,22 +8,7 @@ mod db;
 use commands::audio;
 use commands::api;
 use commands::fs;
-
-/// 应用程序状态管理结构体
-/// 用于在Tauri应用程序中共享状态
-struct AppState {
-    /// 录制状态，使用Mutex保证线程安全
-    recording_state: Mutex<RecordingState>,
-}
-
-/// 录制状态结构体
-/// 跟踪当前是否正在录制以及音频文件路径
-struct RecordingState {
-    /// 是否正在录制
-    is_recording: bool,
-    /// 音频文件路径（如果有的话）
-    audio_path: Option<String>,
-}
+use services::recording_service::RecordingService;
 
 /// Tauri应用程序入口点
 /// 配置和启动整个应用程序
@@ -33,13 +18,8 @@ pub fn run() {
     env_logger::init();
 
     tauri::Builder::default()
-        // 管理应用程序状态，使其对所有命令处理器可用
-        .manage(AppState {
-            recording_state: Mutex::new(RecordingState {
-                is_recording: false,
-                audio_path: None,
-            }),
-        })
+        // 管理录制服务状态
+        .manage(Mutex::new(RecordingService::new()))
     // 注册所有Tauri命令处理器
     .invoke_handler(tauri::generate_handler![
             // 音频命令
